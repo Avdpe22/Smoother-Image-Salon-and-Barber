@@ -94,6 +94,8 @@ index.html          Home — Popular Services carousel + Chair Rail availability
 barbers.html        Five barbers, individual booking links
 services.html       Current menu + proposed premium tier
 about.html          Shop story
+new-here.html       First-time guest guide: booking, what to expect, policy summary
+policy.html         Cancellation, no-show, and arrival policy
 contact.html        Address, hours, map, link tree
 404.html            Custom not-found page
 
