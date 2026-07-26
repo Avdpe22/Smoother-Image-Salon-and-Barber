@@ -64,7 +64,11 @@
         a.setAttribute("href", url);
         a.setAttribute("target", "_blank");
         a.setAttribute("rel", "noopener");
+        return;
       }
+      // No URL configured yet: hide the link rather than shipping a dead "#".
+      var host = a.closest("li") || a;
+      host.style.display = "none";
     });
   }
 
