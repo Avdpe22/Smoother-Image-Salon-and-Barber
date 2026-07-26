@@ -6,20 +6,30 @@ Static site. No build step, no dependencies, no framework. Five pages plus a 404
 
 ## 1. What to fill in before launch
 
-Everything below is a placeholder. Nothing here is fake-but-presented-as-real; each item is also flagged visibly on the page itself.
-
 | # | File | What to replace |
 |---|------|-----------------|
 | 1 | `assets/js/config.js` | **All booking links** and the Instagram / Facebook / TikTok / Google URLs. This is the only file you edit to change links site-wide. |
-| 2 | `barbers.html` | Five placeholder bios. Real headshots too — currently every barber uses a general shop photo. |
+| 2 | `barbers.html` | Five placeholder bios. Real headshots too — currently every barber except one uses a general shop photo. |
 | 3 | `services.html` | Service *names and descriptions* (prices and durations are real, pulled from Booksy). Also decide whether to keep or delete the "Proposed premium tier" section. |
 | 4 | `about.html` | Shop history and founding details. |
 | 5 | `robots.txt`, `sitemap.xml` | Replace `REPLACE-WITH-YOUR-DOMAIN` with your real URL. |
-| 6 | `index.html` | The `<link rel="canonical">` and `og:image` URL. |
+| 6 | `index.html` | The `<link rel="canonical">` URL. |
+| 7 | `assets/img/shop-4.jpg` | **Currently a duplicate of shop-3.jpg.** Only four real shop photos were supplied (shop-1, shop-2, shop-3, shop-5) — a real fifth photo is needed here, since the site references five image slots (Jordan's chair, the home page collage, and the About page gallery). |
 
 ---
 
-## 2. Deploy to GitHub Pages
+## 2. What's new in this pass
+
+- **New logo** applied as the nav mark, footer mark, and all favicons (32×32, 16×16, apple-touch-icon). Background was removed and the mark was auto-cropped from the uploaded logo file.
+- **New social preview image** (`assets/img/og-image.jpg`, 1200×630) — this is what shows up when the site link is shared on iMessage, Slack, X, Facebook, etc. It's now wired into `og:image` / `twitter:image` on every page, not just the home page.
+- **Popular Services carousel** added to the home page, just below the hero. Auto-advances every 6 seconds, pauses on hover, with arrow and dot navigation. Uses the four real shop photos supplied, each paired with a service name, price, and the shop's address/phone.
+- **Real shop photography** replaces the old placeholder image references across the home, barbers, and about pages.
+- **`assets/js/config.js`** and **`assets/js/app.js`** were rebuilt from scratch (they were referenced in the HTML but not included in earlier files). `config.js` is the single file to edit for every booking and social link; `app.js` handles the mobile menu, scroll reveals, the Chair Rail draw-in animation, and the new carousel.
+- **404.html** now uses the same relative asset paths as every other page (it previously used absolute `/assets/...` paths, which only work if the site is deployed at a domain root rather than a subpath like `username.github.io/smoother-image/`).
+
+---
+
+## 3. Deploy to GitHub Pages
 
 **Route A — deploy from a branch. Simplest. Use this one.**
 
@@ -53,14 +63,12 @@ Everything below is a placeholder. Nothing here is fake-but-presented-as-real; e
 7. Wait 1–3 minutes. Refresh the Pages settings screen and your live URL appears at the top:
    `https://YOUR-USERNAME.github.io/smoother-image/`
 
-**Route B — GitHub Actions.** Only if you prefer it. `.github/workflows/deploy.yml` is included and ready. In Settings → Pages, set Source to **GitHub Actions** instead. Every push to `main` then redeploys automatically.
-
 ### Updating the site later
 Edit a file directly on github.com (click the file, then the pencil icon, then Commit), or push a new commit. Changes go live in about a minute. Hard-refresh with `Ctrl/Cmd + Shift + R` if you still see the old version.
 
 ---
 
-## 3. Custom domain (optional)
+## 4. Custom domain (optional)
 
 1. Buy a domain (Namecheap, Cloudflare, Porkbun — roughly $10–15/year).
 2. Rename `CNAME.example` to exactly `CNAME` (no extension) and put your bare domain inside it, one line, e.g. `smootherimagebarbersalon.com`.
@@ -79,10 +87,10 @@ Edit a file directly on github.com (click the file, then the pencil icon, then C
 
 ---
 
-## 4. File structure
+## 5. File structure
 
 ```
-index.html          Home — includes the Chair Rail availability graph
+index.html          Home — Popular Services carousel + Chair Rail availability graph
 barbers.html        Five barbers, individual booking links
 services.html       Current menu + proposed premium tier
 about.html          Shop story
@@ -93,22 +101,25 @@ contact.html        Address, hours, map, link tree
 robots.txt          Search engine directives
 sitemap.xml         Page index for search engines
 site.webmanifest    Mobile "add to home screen" metadata
-CNAME.example       Rename to CNAME when using a custom domain
-
-.github/workflows/deploy.yml   Optional Actions deploy
 
 assets/
-  css/app.css       Entire design system, one file
+  css/app.css       Entire design system + carousel styles, one file
   js/config.js      >>> ALL booking + social links live here <<<
-  js/app.js         Nav, scroll reveals, Chair Rail animation
-  img/              Logo, favicons, shop photos
+  js/app.js         Nav, scroll reveals, Chair Rail animation, carousel
+  img/
+    icon-mark.png         Nav + footer logo mark (from new logo)
+    favicon-32.png        32×32 favicon
+    favicon-16.png        16×16 favicon
+    apple-touch-icon.png  180×180 home-screen icon
+    og-image.jpg          1200×630 social link-preview image
+    shop-1.jpg .. shop-5.jpg   Real shop photography (shop-4.jpg is a placeholder duplicate — see section 1)
 ```
 
 ---
 
-## 5. Design notes
+## 6. Design notes
 
-- **Palette** is drawn from lounge materials — brass, oxblood, smoked charcoal, bone — rather than traditional barber-pole primaries. The red/white/blue survives only as the 3px hairline under the header.
+- **Palette** is drawn from lounge materials — brass, oxblood, smoked charcoal, bone — rather than traditional barber-pole primaries. The red/white/blue survives only as the 3px hairline under the header, and again as a subtle nod in the social preview image.
 - **Type** is Archivo (display), Instrument Sans (body), JetBrains Mono (labels, times, prices).
-- **Signature element** is the Chair Rail on the home page: the shop's real two-block daily schedule drawn to scale across the week. It doubles as the booking entry point.
+- **Signature elements** are the Chair Rail on the home page (the real two-block daily schedule drawn to scale) and the new Popular Services carousel, both built from real, shop-specific content rather than generic stock imagery.
 - Responsive to mobile, keyboard-focus visible, `prefers-reduced-motion` respected.
