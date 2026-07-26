@@ -629,6 +629,46 @@ p.muted { color: var(--smoke); }
   .carousel { aspect-ratio: 4/5; }
 }
 
+/* ---------- New Here: expect rows + FAQ ---------- */
+.info-list { display: flex; flex-direction: column; }
+.info-row {
+  display: flex;
+  gap: 22px;
+  padding: 22px 0;
+  border-bottom: 1px solid var(--hairline);
+}
+.info-row:last-child { border-bottom: none; }
+.info-tag {
+  flex-shrink: 0;
+  width: 92px;
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--brass);
+  padding-top: 3px;
+}
+.info-row h4 { font-size: 1.02rem; margin-bottom: 6px; }
+.info-row p { font-size: 0.92rem; margin: 0; }
+
+.faq-item { border-bottom: 1px solid var(--hairline); padding: 18px 0; }
+.faq-item:first-child { padding-top: 0; }
+.faq-item:last-child { border-bottom: none; }
+.faq-q {
+  font-family: var(--display);
+  font-variation-settings: "wdth" 108;
+  font-weight: 700;
+  font-size: 1.02rem;
+  margin-bottom: 6px;
+  color: var(--bone);
+}
+.faq-a { font-size: 0.92rem; margin: 0; }
+
+@media (max-width: 640px) {
+  .info-row { flex-direction: column; gap: 6px; }
+  .info-tag { width: auto; }
+}
+
 /* ---------- A11y ---------- */
 a:focus-visible, button:focus-visible {
   outline: 2px solid var(--brass);
