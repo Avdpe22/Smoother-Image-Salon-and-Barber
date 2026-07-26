@@ -1,127 +1,144 @@
 # Smoother Image Barber Salon — Website
 
-Static site. No build step, no dependencies, no framework. Five pages plus a 404.
+Static site. No build step, no dependencies, no framework. Seven pages plus a 404.
 
 ---
 
-## 1. What to fill in before launch
+## 1. What changed in this pass
 
-| # | File | What to replace |
-|---|------|-----------------|
-| 1 | `assets/js/config.js` | **All booking links** and the Instagram / Facebook / TikTok / Google URLs. This is the only file you edit to change links site-wide. |
-| 2 | `barbers.html` | Five placeholder bios. Real headshots too — currently every barber except one uses a general shop photo. |
-| 3 | `services.html` | Service *names and descriptions* (prices and durations are real, pulled from Booksy). Also decide whether to keep or delete the "Proposed premium tier" section. |
-| 4 | `about.html` | Shop history and founding details. |
-| 5 | `robots.txt`, `sitemap.xml` | Replace `REPLACE-WITH-YOUR-DOMAIN` with your real URL. |
-| 6 | `index.html` | The `<link rel="canonical">` URL. |
-| 7 | `assets/img/shop-4.jpg` | **Currently a duplicate of shop-3.jpg.** Only four real shop photos were supplied (shop-1, shop-2, shop-3, shop-5) — a real fifth photo is needed here, since the site references five image slots (Jordan's chair, the home page collage, and the About page gallery). |
+**Booking is now wired to real, live Booksy books.** It was placeholder URLs before.
+
+- `assets/js/config.js` now points at the two verified Booksy listings. One file still controls every booking and social link site-wide.
+- **Mike Neal** → Booksy `387165` (5.0, 251 reviews, full menu). This is also the `general` fallback.
+- **Twuan Looney** → Booksy `1658389` (5.0, 26 reviews). His profile says he cuts **after 4pm only**, which is now reflected on his barber card and in the Chair Rail note.
+- **Jordan, Shenique, Creshawn** have no Booksy book. Their buttons fall through to the main shop page. Add their URLs to `config.js` when they have one.
+
+**Two dead Booksy listings were found. Do not link them.**
+
+| ID | Name | Problem |
+|----|------|---------|
+| `1562002` | Smoother Image Barber & Beauty | No services, wrong address ("blue ridge hwy"), photo file is named `leyvas-barber-shop` — recycled from a previous tenant |
+| `1423642` | Smoother image | No services, city field says Kansas City, name lowercase |
+
+Both still rank in Booksy's Grandview directory, so customers can land on an empty page. **Claim and delete them, or ask Booksy support to merge them into `387165`.** Highest-value 20 minutes on this list.
+
+**The no-show fee is gone.** `policy.html` previously advertised a 100% no-show charge that nothing enforced. That's now a short page that asks rather than threatens, with matching copy on `new-here.html`. If you later turn on Booksy Deposits or Cancellation Fees, the fee language can come back.
+
+**Real pricing replaced the placeholder menu.** `services.html`, the homepage carousel, and the New Here favorites now use the actual service names and prices from Mike's Booksy listing. A note on the menu makes clear each barber prices their own chair (Twuan's haircut + beard is $40, not $35).
+
+**Spelling:** the site said "Twaun"; his own Booksy profile says **Twuan Looney**. Changed everywhere including the `data-book` key.
+
+**Social links** are real for Instagram (`@smootherimage95`), Facebook, and Snapchat. TikTok and Google Business have no URL yet — `app.js` now **hides** unconfigured social links instead of rendering a dead `#`.
 
 ---
 
-## 2. What's new in this pass
+## 2. What still needs you
 
-- **New logo** applied as the nav mark, footer mark, and all favicons (32×32, 16×16, apple-touch-icon). Background was removed and the mark was auto-cropped from the uploaded logo file.
-- **New social preview image** (`assets/img/og-image.jpg`, 1200×630) — this is what shows up when the site link is shared on iMessage, Slack, X, Facebook, etc. It's now wired into `og:image` / `twitter:image` on every page, not just the home page.
-- **Popular Services carousel** added to the home page, just below the hero. Auto-advances every 6 seconds, pauses on hover, with arrow and dot navigation. Uses the four real shop photos supplied, each paired with a service name, price, and the shop's address/phone.
-- **Real shop photography** replaces the old placeholder image references across the home, barbers, and about pages.
-- **`assets/js/config.js`** and **`assets/js/app.js`** were rebuilt from scratch (they were referenced in the HTML but not included in earlier files). `config.js` is the single file to edit for every booking and social link; `app.js` handles the mobile menu, scroll reveals, the Chair Rail draw-in animation, and the new carousel.
-- **404.html** now uses the same relative asset paths as every other page (it previously used absolute `/assets/...` paths, which only work if the site is deployed at a domain root rather than a subpath like `username.github.io/smoother-image/`).
+| # | File | What to do |
+|---|------|-----------|
+| 1 | — | Delete/merge the two dead Booksy listings (see table above) |
+| 2 | `assets/img/barber-*.jpg` | **AI-generated stand-ins.** The five barber cards do not show these barbers. Replace with real headshots — customers pick a chair by the face. Any 3:4 portrait crop works |
+| 3 | `assets/js/config.js` | Booking URLs for Jordan, Shenique, Creshawn. TikTok and Google Business URLs |
+| 4 | `barbers.html` | Five real bios (currently marked placeholder) and individual headshots |
+| 5 | `about.html` | Real shop history and founding year |
+| 6 | `robots.txt`, `sitemap.xml` | Replace `REPLACE-WITH-YOUR-DOMAIN` |
+| 7 | `index.html` | The `<link rel="canonical">` URL |
+| 8 | `services.html` | Decide whether to keep or delete the "Proposed premium tier" section — it's a proposal, not a live menu |
+
+Also worth fixing **on Booksy, not here**: Mike's listing stores the Instagram URL malformed (`https://smootherimage95` with no domain).
 
 ---
 
 ## 3. Deploy to GitHub Pages
 
-**Route A — deploy from a branch. Simplest. Use this one.**
+1. Create a repo at github.com — **Public**, empty (no README, no .gitignore).
+2. Upload everything *inside* this folder, not the folder itself.
+   - `.nojekyll` is hidden. Mac: `Cmd + Shift + .` in Finder. Windows: enable "Hidden items" in File Explorer's View tab.
+   - Or by command line:
+     ```bash
+     cd path/to/smoother-image-website
+     git init && git add -A && git commit -m "Initial site"
+     git branch -M main
+     git remote add origin https://github.com/YOUR-USERNAME/smoother-image.git
+     git push -u origin main
+     ```
+3. **Settings → Pages → Source → Deploy from a branch**, branch `main`, folder `/ (root)`, Save.
+4. Wait 1–3 minutes. Live at `https://YOUR-USERNAME.github.io/smoother-image/`.
 
-1. Create a GitHub account at github.com if you don't have one.
-2. Click **+** (top right) → **New repository**.
-   - Name it `smoother-image` (or anything).
-   - Set it to **Public**. Pages requires public on free accounts.
-   - Do *not* add a README, .gitignore, or license — the repo must start empty.
-   - Click **Create repository**.
-3. Upload the files. Two options:
+To update later: edit the file on github.com (pencil icon → Commit), or push. Hard-refresh with `Ctrl/Cmd + Shift + R`.
 
-   **Drag and drop (no command line):**
-   - On the empty repo page, click **uploading an existing file**.
-   - Unzip this project on your computer, select *everything inside* the folder (not the folder itself), and drag it into the browser.
-   - Important: `.nojekyll` is a hidden file. On Mac press `Cmd + Shift + .` in Finder to reveal hidden files before selecting; on Windows enable "Hidden items" in File Explorer's View tab.
-   - Scroll down, click **Commit changes**.
+### Custom domain (optional)
 
-   **Or via command line:**
-   ```bash
-   cd path/to/smoother-image-website
-   git init
-   git add -A
-   git commit -m "Initial site"
-   git branch -M main
-   git remote add origin https://github.com/YOUR-USERNAME/smoother-image.git
-   git push -u origin main
-   ```
-4. In the repo, go to **Settings** → **Pages** (left sidebar).
-5. Under **Build and deployment** → **Source**, choose **Deploy from a branch**.
-6. Set branch to **main** and folder to **/ (root)**. Click **Save**.
-7. Wait 1–3 minutes. Refresh the Pages settings screen and your live URL appears at the top:
-   `https://YOUR-USERNAME.github.io/smoother-image/`
+Rename `CNAME.example` to exactly `CNAME` and put your bare domain inside, one line. Then at your registrar:
 
-### Updating the site later
-Edit a file directly on github.com (click the file, then the pencil icon, then Commit), or push a new commit. Changes go live in about a minute. Hard-refresh with `Ctrl/Cmd + Shift + R` if you still see the old version.
+| Type | Host | Value |
+|------|------|-------|
+| A | @ | 185.199.108.153 |
+| A | @ | 185.199.109.153 |
+| A | @ | 185.199.110.153 |
+| A | @ | 185.199.111.153 |
+| CNAME | www | YOUR-USERNAME.github.io |
+
+Settings → Pages → Custom domain, enter it, Save. Tick **Enforce HTTPS** once it validates (can take 24 hours).
 
 ---
 
-## 4. Custom domain (optional)
-
-1. Buy a domain (Namecheap, Cloudflare, Porkbun — roughly $10–15/year).
-2. Rename `CNAME.example` to exactly `CNAME` (no extension) and put your bare domain inside it, one line, e.g. `smootherimagebarbersalon.com`.
-3. At your domain registrar, add these DNS records:
-
-   | Type | Host | Value |
-   |------|------|-------|
-   | A | @ | 185.199.108.153 |
-   | A | @ | 185.199.109.153 |
-   | A | @ | 185.199.110.153 |
-   | A | @ | 185.199.111.153 |
-   | CNAME | www | YOUR-USERNAME.github.io |
-
-4. In Settings → Pages → **Custom domain**, enter the domain and Save.
-5. Once it validates (can take up to 24 hours), tick **Enforce HTTPS**.
-
----
-
-## 5. File structure
+## 4. File structure
 
 ```
-index.html          Home — Popular Services carousel + Chair Rail availability graph
+index.html          Home — services carousel + Chair Rail availability graph
 barbers.html        Five barbers, individual booking links
-services.html       Current menu + proposed premium tier
+services.html       Live menu (Mike's chair) + proposed premium tier
 about.html          Shop story
-new-here.html       First-time guest guide: booking, what to expect, policy summary
-policy.html         Cancellation, no-show, and arrival policy
+new-here.html       First-time guest guide
+policy.html         Arrival policy — short, no fees
 contact.html        Address, hours, map, link tree
 404.html            Custom not-found page
 
 .nojekyll           Serves files as-is (do not delete)
+CNAME.example       Rename to CNAME for a custom domain
 robots.txt          Search engine directives
 sitemap.xml         Page index for search engines
 site.webmanifest    Mobile "add to home screen" metadata
 
 assets/
-  css/app.css       Entire design system + carousel styles, one file
+  css/app.css       Entire design system, one file
   js/config.js      >>> ALL booking + social links live here <<<
   js/app.js         Nav, scroll reveals, Chair Rail animation, carousel
   img/
-    icon-mark.png         Nav + footer logo mark (from new logo)
-    favicon-32.png        32×32 favicon
-    favicon-16.png        16×16 favicon
+    icon-mark.png         Nav + footer logo mark
+    favicon-32.png        favicon-16.png
     apple-touch-icon.png  180×180 home-screen icon
+    icon-192.png          icon-512.png  (PWA manifest icons)
     og-image.jpg          1200×630 social link-preview image
-    shop-1.jpg .. shop-5.jpg   Real shop photography (shop-4.jpg is a placeholder duplicate — see section 1)
+
+    shop-1.jpg   REAL — loc trim with shears      (carousel 4, collage, about)
+    shop-2.jpg   REAL — beard + hairline shape-up (hero, carousel 2, about)
+    shop-3.jpg   REAL — comb and clipper work     (carousel 1, collage)
+    shop-5.jpg   REAL — fade and neckline finish  (carousel 3, collage, about)
+
+    shop-4.jpg   AI  — wide shot of the floor     (about gallery)
+    room-1.jpg   AI  — chair lit for filming      (about gallery)
+    room-2.jpg   AI  — neckline detail            (home collage)
+    barber-mike.jpg / -twuan / -jordan / -creshawn   AI portrait stand-ins
+    barber-shenique.jpg   AI work sample — no portrait was available
 ```
+
+### Which photos are real
+
+Four images are genuine shop photography: `shop-1`, `shop-2`, `shop-3`, `shop-5`. They carry the hero,
+the whole services carousel, and most of the collages — the site leads with real work everywhere it matters.
+
+Everything prefixed `barber-`, plus `shop-4`, `room-1` and `room-2`, is AI-generated. It fills the layout
+so nothing looks broken, and the barbers and About pages both say so on the page. The barber portraits are
+the ones to replace first: showing a customer a face that isn't the barber they're booking is the one
+placeholder here with a real cost attached.
 
 ---
 
-## 6. Design notes
+## 5. Design notes
 
-- **Palette** is drawn from lounge materials — brass, oxblood, smoked charcoal, bone — rather than traditional barber-pole primaries. The red/white/blue survives only as the 3px hairline under the header, and again as a subtle nod in the social preview image.
+- **Palette** from lounge materials — brass, oxblood, smoked charcoal, bone — rather than barber-pole primaries. The red/white/blue survives as the 3px hairline under the header and a band on the social preview.
 - **Type** is Archivo (display), Instrument Sans (body), JetBrains Mono (labels, times, prices).
-- **Signature elements** are the Chair Rail on the home page (the real two-block daily schedule drawn to scale) and the new Popular Services carousel, both built from real, shop-specific content rather than generic stock imagery.
-- Responsive to mobile, keyboard-focus visible, `prefers-reduced-motion` respected.
+- **Signature element** is the Chair Rail on the home page: the real two-block daily schedule drawn to scale.
+- Responsive, keyboard-focus visible, `prefers-reduced-motion` respected.
