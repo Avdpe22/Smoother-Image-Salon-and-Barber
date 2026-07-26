@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://REPLACE-WITH-YOUR-DOMAIN/sitemap.xml
+Sitemap: https://avdpe22.github.io/Smoother-Image-Salon-and-Barber/sitemap.xml
